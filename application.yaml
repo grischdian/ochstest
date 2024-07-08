@@ -8,7 +8,7 @@ metadata:
 spec:
   destination:
     namespace: argocd
-    server: kubernetes.default.svc.cluster.local
+    server: https://kubernetes.default.svc
   project: default
   source:
     path: ocis-test
