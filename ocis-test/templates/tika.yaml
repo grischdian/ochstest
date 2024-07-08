@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tika	
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: tika
+    repoURL: https://apache.jfrog.io/artifactory/tika
+    targetRevision: 2.9.0
+    helm:
+      releaseName: tika
+      values: |
+        - image:
+            tag: "latest-full" # using "full" tag for OCR func.
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: tika
