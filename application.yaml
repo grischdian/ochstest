@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocis-test
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    server: kubernetes.default.svc.cluster.local
+  project: default
+  source:
+    path: ocis-test
+    repoURL: https://github.com/grischdian/ochstest
+    targetRevision: HEAD
+
