@@ -16,4 +16,4 @@ spec:
             tag: "latest-full" # using "full" tag for OCR func.
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: tika
+    namespace: ocis-tika
