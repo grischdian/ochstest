@@ -10,10 +10,10 @@ spec:
     repoURL: https://apache.jfrog.io/artifactory/tika
     targetRevision: 2.9.0
     helm:
-      releaseName: tika
+      releaseName: ocis-tika
       values: |
-        - image:
-            tag: "latest-full"
+        image:
+          tag: "latest-full"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ocis-tika
