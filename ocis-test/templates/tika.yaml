@@ -13,7 +13,7 @@ spec:
       releaseName: tika
       values: |
         - image:
-            tag: "latest-full" # using "full" tag for OCR func.
+            tag: "latest-full"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ocis-tika
