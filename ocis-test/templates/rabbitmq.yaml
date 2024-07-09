@@ -4,6 +4,9 @@ metadata:
   name: rabbitmq
   namespace: argocd
 spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
   project: default
   source:
     chart: rabbitmq

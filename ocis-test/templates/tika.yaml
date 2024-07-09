@@ -4,6 +4,9 @@ metadata:
   name: tika	
   namespace: argocd
 spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
   project: default
   source:
     chart: tika

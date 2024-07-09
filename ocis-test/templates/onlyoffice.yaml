@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: onlyoffice
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  project: default
+  source:
+    chart: docs
+    repoURL: https://download.onlyoffice.com/charts/stable
+    targetRevision: 4.1.0
+    helm:
+      releaseName: onlyoffice
+      values: |
+        wopi:
+          enabled: true
+        ingress:
+          enabled: true
+          host: onlyoffice.kube.owncloud.test
+          annotations:
+            cert-manager.io/cluster-issuer: issuer
+          ssl:
+            enabled: true
+            secret: onlyoffice-tls
+        connections:
+          dbHost: postgresql
+          redisHost: redis-master
+          amqpHost: rabbitmq
+        persistence:
+          existingClaim: ds-files
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: onlyoffice
