@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wopi
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  project: default
+  source:
+    chart: wopiserver
+    repoURL: 
+    targetRevision: 0.9.2
+    helm: https://cs3org.github.io/charts/
+      releaseName: collabora
+      values: |
+        image:
+          # renovate: datasource=docker depName=cs3org/wopiserver
+          tag: v10.4.0
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: issuer
+          hostname: wopi.grischdian.de
+          tls:
+            - secretName: wopi-tls
+              hosts:
+              - wopi.grischdian.de
+        config:
+          cs3:
+            gateway: gateway.ocis.svc.cluster.local:9142
+            sslVerify: False
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: wopiserver
