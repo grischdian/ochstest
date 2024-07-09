@@ -18,7 +18,7 @@ spec:
         image:
           tag: v10.4.0
         ingress:
-          class: nginx
+          ingressClassName: nginx
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: issuer
