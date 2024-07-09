@@ -10,13 +10,12 @@ spec:
   project: default
   source:
     chart: wopiserver
-    repoURL: 
+    repoURL: https://cs3org.github.io/charts/
     targetRevision: 0.9.2
-    helm: https://cs3org.github.io/charts/
-      releaseName: collabora
+    helm: 
+      releaseName: wopiserver
       values: |
         image:
-          # renovate: datasource=docker depName=cs3org/wopiserver
           tag: v10.4.0
         ingress:
           enabled: true
