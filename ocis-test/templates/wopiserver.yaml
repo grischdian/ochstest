@@ -18,10 +18,10 @@ spec:
         image:
           tag: v10.4.0
         ingress:
-          ingressClassName: nginx
           enabled: true
           annotations:
             cert-manager.io/cluster-issuer: issuer
+            kubernetes.io/ingress.class: nginx
           hostname: wopi.grischdian.de
           tls:
             - secretName: wopi-tls
