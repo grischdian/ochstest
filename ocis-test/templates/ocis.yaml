@@ -1,0 +1,132 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocis
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  project: default
+  source:
+    path: charts/ocis
+    repoURL: https://github.com/b1schumacher/ocis-charts.git
+    targetRevision: ca_integration
+    helm: 
+      releaseName: ocis
+      values: |
+        externalDomain: ocis.grischdian.de
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          annotations:
+            nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+            cert-manager.io/cluster-issuer: issuer
+          tls:
+            - secretName: ocis-dev-tls
+              hosts:
+                - ocis.grischdian.de
+
+        insecure:
+          oidcIdpInsecure: true
+          ocisHttpApiInsecure: true
+
+        features:
+          appsIntegration:
+            enabled: true
+            wopiIntegration:
+              wopiServerURI: https://wopi.grischdian.de
+              #wopiServerURI: http://wopiserver.wopiserver.svc.cluster.local:8880
+              officeSuites:
+                - name: Collabora
+                  enabled: true
+                  uri: "https://collabora.grischdian.de"
+                  insecure: true
+                  iconURI: https://collabora.grischdian.de/favicon.ico
+            mimetypes:
+              # mimetypes for creation
+              - mime_type: application/vnd.oasis.opendocument.text
+                extension: odt
+                name: OpenDocument
+                description: OpenDocument text document
+                icon: image-edit
+                default_app: "Collabora"
+                allow_creation: true
+              - mime_type: application/vnd.oasis.opendocument.spreadsheet
+                extension: ods
+                name: OpenSpreadsheet
+                description: OpenDocument spreadsheet document
+                icon: image-edit
+                default_app: "Collabora"
+                allow_creation: true
+              - mime_type: application/vnd.oasis.opendocument.presentation
+                extension: odp
+                name: OpenPresentation
+                description: OpenDocument presentation document
+                icon: image-edit
+                default_app: "Collabora"
+                allow_creation: true
+              - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                extension: docx
+                name: Text document
+                description: Text document
+                icon: image-edit
+                default_app: "OnlyOffice"
+                allow_creation: true
+              - mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                extension: xlsx
+                name: Spreadsheet
+                description: Spreadsheet
+                icon: image-edit
+                default_app: "OnlyOffice"
+                allow_creation: true
+              - mime_type: application/vnd.openxmlformats-officedocument.presentationml.presentation
+                extension: pptx
+                name: Presentation
+                description: Presentation
+                icon: image-edit
+                default_app: "OnlyOffice"
+                allow_creation: true
+              - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.form
+                extension: docxf
+                name: FormDocument
+                description: Form document
+                icon: image-edit
+                default_app: "OnlyOffice"
+                allow_creation: true
+
+        services:
+          idm:
+            persistence:
+              enabled: true
+
+          nats:
+            persistence:
+              enabled: true
+
+          search:
+            persistence:
+              enabled: true
+            extractor:
+              type: tika
+              tika:
+                url: http://tika.tika.svc.cluster.local:9998
+
+          storagesystem:
+            persistence:
+              enabled: true
+
+          storageusers:
+            persistence:
+              enabled: true
+
+          thumbnails:
+            persistence:
+              enabled: true
+
+          web:
+            persistence:
+              enabled: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: ocis
