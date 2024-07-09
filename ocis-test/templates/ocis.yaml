@@ -38,6 +38,10 @@ spec:
               wopiServerURI: https://wopi.grischdian.de
               #wopiServerURI: http://wopiserver.wopiserver.svc.cluster.local:8880
               officeSuites:
+                - name: MS
+                  enabled: true
+                  uri: "https://online.grischdian.de"
+                  insecure: true
                 - name: Collabora
                   enabled: true
                   uri: "https://collabora.grischdian.de"
