@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: collabora
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  project: default
+  source:
+    chart: collabora-online
+    repoURL: https://collaboraonline.github.io/online/
+    targetRevision: 1.1.16
+    helm:
+      releaseName: collabora
+      values: |
+        collabora:
+          aliasgroups:
+            - host: "https://wopi.grischdian.de"
+          extra_params: --o:ssl.enable=false --o:ssl.termination=true --o:net.frame_ancestors=ocis.grischdian.de
+        ingress:
+          enabled: true
+          className: "nginx"
+          annotations:
+            nginx.ingress.kubernetes.io/upstream-hash-by: "$arg_WOPISrc"
+            nginx.ingress.kubernetes.io/proxy-body-size: "0"
+            nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+            nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+            cert-manager.io/cluster-issuer: issuer
+          hosts:
+            - host: collabora.grischdian.de
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - secretName: collabora-dev-tls
+              hosts:
+                - collabora.grischdian.de
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: collabora
