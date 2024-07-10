@@ -15,7 +15,7 @@ spec:
     helm: 
       releaseName: ocis
       values: |
-        externalDomain: ocis.grischdian.de
+        externalDomain: ocis.rost.cloud
         ingress:
           enabled: true
           ingressClassName: nginx
@@ -25,7 +25,7 @@ spec:
           tls:
             - secretName: ocis-dev-tls
               hosts:
-                - ocis.grischdian.de
+                - ocis.rost.cloud
 
         insecure:
           oidcIdpInsecure: true
@@ -35,7 +35,7 @@ spec:
           appsIntegration:
             enabled: true
             wopiIntegration:
-              wopiServerURI: https://wopi.grischdian.de
+              wopiServerURI: https://wopi.rost.cloud
               #wopiServerURI: http://wopiserver.wopiserver.svc.cluster.local:8880
               officeSuites:
                 - name: MS
@@ -44,9 +44,9 @@ spec:
                   insecure: true
                 - name: Collabora
                   enabled: true
-                  uri: "https://collabora.grischdian.de"
+                  uri: "https://collabora.rost.cloud"
                   insecure: true
-                  iconURI: https://collabora.grischdian.de/favicon.ico
+                  iconURI: https://collabora.rost.cloud/favicon.ico
             mimetypes:
               # mimetypes for creation
               - mime_type: application/vnd.oasis.opendocument.text

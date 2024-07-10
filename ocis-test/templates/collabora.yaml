@@ -17,8 +17,8 @@ spec:
       values: |
         collabora:
           aliasgroups:
-            - host: "https://wopi.grischdian.de"
-          extra_params: --o:ssl.enable=false --o:ssl.termination=true --o:net.frame_ancestors=ocis.grischdian.de
+            - host: "https://wopi.rost.cloud"
+          extra_params: --o:ssl.enable=false --o:ssl.termination=true --o:net.frame_ancestors=ocis.rost.cloud
         ingress:
           enabled: true
           className: "nginx"
@@ -29,14 +29,14 @@ spec:
             nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
             cert-manager.io/cluster-issuer: issuer
           hosts:
-            - host: collabora.grischdian.de
+            - host: collabora.rost.cloud
               paths:
                 - path: /
                   pathType: ImplementationSpecific
           tls:
             - secretName: collabora-dev-tls
               hosts:
-                - collabora.grischdian.de
+                - collabora.rost.cloud
   destination:
     server: "https://kubernetes.default.svc"
     namespace: collabora
